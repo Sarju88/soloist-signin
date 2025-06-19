@@ -14,6 +14,7 @@
       justify-content: center;
       font-family: 'Segoe UI', sans-serif;
       color: white;
+      overflow: hidden;
     }
     .box {
       background: #1c1c1c;
@@ -21,6 +22,7 @@
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0,0,0,0.4);
       width: 300px;
+      z-index: 10;
     }
     input, button {
       width: 100%;
@@ -39,10 +41,40 @@
     button:hover {
       background: #218838;
     }
+
+    .popup {
+      position: absolute;
+      width: 300px;
+      height: 200px;
+      box-shadow: 3px 3px 0px black;
+      font-family: 'MS Sans Serif', sans-serif;
+      border: 2px solid gray;
+    }
+
+    .title-bar {
+      background: silver;
+      color: black;
+      padding: 2px 6px;
+      font-weight: bold;
+      border-bottom: 2px solid gray;
+      height: 20px;
+      line-height: 20px;
+    }
+
+    .popup-content {
+      padding: 20px;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    .faces {
+      font-size: 28px;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
-  <div class="box">
+  <div class="box" id="login-box">
     <h2>Enter Secure Area</h2>
     <input type="password" id="p" placeholder="Password" autocomplete="off">
     <button onclick="z()">Enter</button>
@@ -50,17 +82,80 @@
   </div>
 
   <script>
+    let virusMode = false;
     function z() {
       const v = document.getElementById("p").value;
       const b64 = s => btoa(unescape(encodeURIComponent(s)));
-      const check = "TGV0TWVJbjEyMw==";
+      const check = "TGV0TWVJbjEyMw=="; // LetMeIn123
       const good = "https://soloist.ai/vvipplayxgameswelcome?redirected=true";
-      const fake = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-      const link = (b64(v) === check) ? good : fake;
-      document.getElementById("r").innerHTML = '<a href="' + link + '" target="_blank" style="color:#4CAF50;font-weight:bold;">Access Granted – Click to Enter</a>';
+
+      if (b64(v) === check) {
+        document.getElementById("r").innerHTML = '<a href="' + good + '" target="_blank" style="color:#4CAF50;font-weight:bold;">Access Granted – Click to Enter</a>';
+      } else {
+        // Activate fake virus
+        if (!virusMode) {
+          virusMode = true;
+          document.getElementById("login-box").remove();
+          alert("You are an idiot!");
+          startVirus();
+        }
+      }
+    }
+
+    function startVirus() {
+      function createPopup(index) {
+        const popup = document.createElement("div");
+        popup.className = "popup";
+        popup.style.background = index % 2 === 0 ? "white" : "black";
+        popup.style.color = index % 2 === 0 ? "black" : "white";
+        popup.style.left = Math.random() * (window.innerWidth - 320) + "px";
+        popup.style.top = Math.random() * (window.innerHeight - 220) + "px";
+
+        const title = document.createElement("div");
+        title.className = "title-bar";
+        title.textContent = "Trojan.JS.YouAreAnIdiot";
+
+        const content = document.createElement("div");
+        content.className = "popup-content";
+        content.innerHTML = `you are an idiot<div class="faces">☺ ☺ ☺</div>`;
+
+        popup.appendChild(title);
+        popup.appendChild(content);
+        document.body.appendChild(popup);
+
+        // Bouncing logic
+        let dx = (Math.random() < 0.5 ? 1 : -1) * (1 + Math.random() * 2);
+        let dy = (Math.random() < 0.5 ? 1 : -1) * (1 + Math.random() * 2);
+        let x = parseFloat(popup.style.left);
+        let y = parseFloat(popup.style.top);
+
+        function bounce() {
+          x += dx;
+          y += dy;
+
+          const w = popup.offsetWidth;
+          const h = popup.offsetHeight;
+
+          if (x <= 0 || x + w >= window.innerWidth) dx *= -1;
+          if (y <= 0 || y + h >= window.innerHeight) dy *= -1;
+
+          popup.style.left = x + "px";
+          popup.style.top = y + "px";
+          requestAnimationFrame(bounce);
+        }
+
+        bounce();
+      }
+
+      for (let i = 0; i < 5; i++) createPopup(i);
+
+      setInterval(() => {
+        createPopup(Math.floor(Math.random() * 100));
+      }, 2000);
     }
   </script>
 
+  <!-- Anti-DevTools / Tamper script -->
   <script>
     (function(){
       const r = atob("aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUTR3NHc5R3dYQ2NR");
