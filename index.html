@@ -54,7 +54,7 @@
       const v = document.getElementById("p").value;
       const b64 = s => btoa(unescape(encodeURIComponent(s)));
       const check = "TGV0TWVJbjEyMw==";
-      const good = "https://soloist.ai/vvipplayxgameswelcome";
+      const good = "https://soloist.ai/vvipplayxgameswelcome?redirected=true";
       const fake = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
       const link = (b64(v) === check) ? good : fake;
       document.getElementById("r").innerHTML = '<a href="' + link + '" target="_blank" style="color:#4CAF50;font-weight:bold;">Access Granted – Click to Enter</a>';
