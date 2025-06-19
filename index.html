@@ -86,13 +86,12 @@
     function z() {
       const v = document.getElementById("p").value;
       const b64 = s => btoa(unescape(encodeURIComponent(s)));
-      const check = "TGV0TWVJbjEyMw=="; // LetMeIn123
-      const good = "https://soloist.ai/vvipplayxgameswelcome?redirected=true";
+      const check = "TGV0TWVJbjEyMw=="; // "LetMeIn123"
 
       if (b64(v) === check) {
-        document.getElementById("r").innerHTML = '<a href="' + good + '" target="_blank" style="color:#4CAF50;font-weight:bold;">Access Granted – Click to Enter</a>';
+        document.cookie = "vip_auth=1; path=/";
+        window.location.href = "https://soloist.ai/vvipplayxgameswelcome";
       } else {
-        // Activate fake virus
         if (!virusMode) {
           virusMode = true;
           document.getElementById("login-box").remove();
@@ -123,7 +122,6 @@
         popup.appendChild(content);
         document.body.appendChild(popup);
 
-        // Bouncing logic
         let dx = (Math.random() < 0.5 ? 1 : -1) * (1 + Math.random() * 2);
         let dy = (Math.random() < 0.5 ? 1 : -1) * (1 + Math.random() * 2);
         let x = parseFloat(popup.style.left);
