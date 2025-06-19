@@ -48,6 +48,7 @@
     <button onclick="z()">Enter</button>
     <div id="r" style="margin-top:15px;"></div>
   </div>
+
   <script>
     function z() {
       const v = document.getElementById("p").value;
@@ -58,6 +59,47 @@
       const link = (b64(v) === check) ? good : fake;
       document.getElementById("r").innerHTML = '<a href="' + link + '" target="_blank" style="color:#4CAF50;font-weight:bold;">Access Granted – Click to Enter</a>';
     }
+  </script>
+
+  <script>
+    (function(){
+      const r = atob("aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUTR3NHc5R3dYQ2NR");
+
+      function redirect() {
+        location.replace(r);
+      }
+
+      function detectWindowSize() {
+        if (
+          window.outerWidth - window.innerWidth > 160 ||
+          window.outerHeight - window.innerHeight > 160
+        ) redirect();
+      }
+
+      const img = new Image();
+      Object.defineProperty(img, "id", {
+        get: function() {
+          redirect();
+        }
+      });
+      console.log(img);
+
+      document.addEventListener("contextmenu", e => e.preventDefault());
+
+      document.onkeydown = function(e) {
+        if (
+          e.keyCode === 123 ||
+          (e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
+          (e.ctrlKey && e.shiftKey && e.keyCode === 74) ||
+          (e.ctrlKey && e.keyCode === 85) ||
+          (e.metaKey && e.altKey && e.keyCode === 73)
+        ) {
+          redirect();
+        }
+      };
+
+      setInterval(detectWindowSize, 300);
+    })();
   </script>
 </body>
 </html>
